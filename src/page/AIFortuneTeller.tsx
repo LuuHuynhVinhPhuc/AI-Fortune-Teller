@@ -147,11 +147,13 @@ export function AIFortuneTeller() {
                                     <div
                                         className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-4 border-2 border-purple-200">
                                         <p>
-                                            Năm sau của bạn sẽ là:
-                                            <span className="ml-2 text-3xl font-extrabold text-pink-500 animate-bounce">
+                                            Năm sau của bạn là:
+                                            <span className="ml-2 text-3xl font-extrabold text-green-500 animate-pulse">
                                             {result}
-                                          </span> ✨
+                                            </span> 🍀
                                         </p>
+                                        <p>Thật ra thì... chẳng có gì đặc biệt xảy ra đâu 🤡</p>
+                                        <p>Nhưng ít nhất bạn đã biết mình bị lừa 😁</p>
 
                                     </div>
                                 </div>
