@@ -1,7 +1,7 @@
-﻿import React, {useState} from 'react';
+﻿import {useState} from 'react';
 
-export default function AIFortuneTeller() {
-    const [yearInput, setYearInput] = useState(2025);
+export function AIFortuneTeller() {
+    const [yearInput, setYearInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState('');
     const [loadingStep, setLoadingStep] = useState(0);

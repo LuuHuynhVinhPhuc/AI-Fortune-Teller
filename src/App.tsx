@@ -1,5 +1,5 @@
 import "./App.css";
-import AIFortuneTeller from "./page/AIFortuneTeller.tsx";
+import {AIFortuneTeller} from "./page/AIFortuneTeller.tsx";
 
 function App() {
     return(
