@@ -1,10 +1,11 @@
-﻿import {useState} from 'react';
+﻿import { useState } from 'react';
 
 export function AIFortuneTeller() {
     const [yearInput, setYearInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState('');
     const [loadingStep, setLoadingStep] = useState(0);
+    const [popup, showpopup] = useState(false);
 
     const steps = [
         "🔍 Đang phân tích dữ liệu vũ trụ...",
@@ -23,7 +24,7 @@ export function AIFortuneTeller() {
         }
 
         if (numYear < currentYear) {
-            setResult("⏳ Bạn muốn tiên tri quá khứ à? Thử nhập một năm trong tương lai nhé!");
+            showpopup(true);
             return;
         }
 
@@ -38,32 +39,25 @@ export function AIFortuneTeller() {
 
         const trollResult = `${numYear + 1}`;
 
-
         setResult(trollResult);
         setIsLoading(false);
     };
 
     return (
-        <div
-            className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 relative overflow-hidden p-6">
+        <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 relative overflow-hidden">
             {/* Animated background elements */}
             <div className="absolute inset-0">
-                <div
-                    className="absolute top-10 left-10 w-20 h-20 bg-yellow-300 rounded-full opacity-20 animate-pulse"></div>
-                <div
-                    className="absolute top-32 right-16 w-16 h-16 bg-pink-300 rounded-full opacity-30 animate-bounce"></div>
-                <div
-                    className="absolute bottom-20 left-20 w-24 h-24 bg-blue-300 rounded-full opacity-25 animate-pulse"></div>
-                <div
-                    className="absolute bottom-40 right-10 w-12 h-12 bg-green-300 rounded-full opacity-20 animate-bounce"></div>
+                <div className="absolute top-10 left-10 w-20 h-20 bg-yellow-300 rounded-full opacity-20 animate-pulse"></div>
+                <div className="absolute top-32 right-16 w-16 h-16 bg-pink-300 rounded-full opacity-30 animate-bounce"></div>
+                <div className="absolute bottom-20 left-20 w-24 h-24 bg-blue-300 rounded-full opacity-25 animate-pulse"></div>
+                <div className="absolute bottom-40 right-10 w-12 h-12 bg-green-300 rounded-full opacity-20 animate-bounce"></div>
             </div>
 
             {/* Main content */}
             <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
                 {/* Header */}
                 <div className="text-center mb-8">
-                    <div
-                        className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mb-4 shadow-2xl animate-spin-slow">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mb-4 shadow-2xl animate-spin-slow">
                         <span className="text-3xl">🔮</span>
                     </div>
                     <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-400 to-cyan-400 mb-2">
@@ -73,8 +67,7 @@ export function AIFortuneTeller() {
                 </div>
 
                 {/* Main card */}
-                <div
-                    className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 w-full max-w-lg shadow-2xl">
+                <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 w-full max-w-lg shadow-2xl">
                     {/* Glass effect inner container */}
                     <div className="bg-white/90 backdrop-blur rounded-2xl p-6 shadow-xl">
                         <div className="mb-6">
@@ -86,12 +79,14 @@ export function AIFortuneTeller() {
                                 value={yearInput}
                                 onChange={(e) => {
                                     setYearInput(e.target.value);
+                                    // Reset result khi thay đổi input
                                     if (result) {
                                         setResult('');
                                     }
                                 }}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
+                                        // Reset result và bắt đầu tiên tri mới
                                         setResult('');
                                         handlePredict();
                                     }
@@ -110,12 +105,9 @@ export function AIFortuneTeller() {
                         >
                             {isLoading ? (
                                 <span className="flex items-center justify-center">
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none"
-                                         viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                                strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor"
-                                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
                                     Đang tiên tri...
                                 </span>
@@ -128,8 +120,7 @@ export function AIFortuneTeller() {
                         <div className="mt-6 min-h-[100px] flex items-center justify-center">
                             {isLoading && (
                                 <div className="text-center">
-                                    <div
-                                        className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full mb-3 animate-pulse">
+                                    <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full mb-3 animate-pulse">
                                         <span className="text-2xl">🌟</span>
                                     </div>
                                     <p className="text-purple-700 font-semibold text-lg animate-pulse">
@@ -140,29 +131,26 @@ export function AIFortuneTeller() {
 
                             {!isLoading && result && (
                                 <div className="text-center animate-fadeIn">
-                                    <div
-                                        className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-full mb-4 shadow-lg">
+                                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-full mb-4 shadow-lg">
                                         <span className="text-3xl">✨</span>
                                     </div>
                                     <div
                                         className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-4 border-2 border-purple-200">
-                                        <p>
+                                        <p className="text-gray-800 font-semibold text-lg">
                                             Năm sau của bạn là:
                                             <span className="ml-2 text-3xl font-extrabold text-green-500 animate-pulse">
-                                            {result}
+                                                {result}
                                             </span> 🍀
                                         </p>
-                                        <p>Thật ra thì... chẳng có gì đặc biệt xảy ra đâu 🤡</p>
-                                        <p>Nhưng ít nhất bạn đã biết mình bị lừa 😁</p>
-
+                                        <p className="text-gray-600 mt-2">Thật ra thì... chẳng có gì đặc biệt xảy ra đâu 🤡</p>
+                                        <p className="text-gray-600">Nhưng ít nhất bạn đã biết mình bị lừa 😁</p>
                                     </div>
                                 </div>
                             )}
 
                             {!isLoading && !result && (
                                 <div className="text-center text-gray-400">
-                                    <div
-                                        className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                                         <span className="text-3xl">🔮</span>
                                     </div>
                                     <p className="font-medium">Nhập năm và bắt đầu khám phá!</p>
@@ -177,6 +165,46 @@ export function AIFortuneTeller() {
                     🌟 Được tạo bởi AI với tình yêu và magic ✨
                 </p>
             </div>
+
+            {/* Popup thông báo lỗi */}
+            {popup && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl transform">
+                        <div className="text-center">
+                            {/* Icon cảnh báo */}
+                            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-orange-400 to-red-500 rounded-full mb-4 shadow-lg">
+                                <span className="text-4xl">⏰</span>
+                            </div>
+
+                            {/* Tiêu đề */}
+                            <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                                Ôi không! 😅
+                            </h3>
+
+                            {/* Nội dung */}
+                            <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-4 border-2 border-orange-200 mb-6">
+                                <p className="text-gray-700 text-lg font-semibold mb-2">
+                                    ⏳ Bạn muốn tiên tri quá khứ à?
+                                </p>
+                                <p className="text-gray-600">
+                                    AI của tôi chưa học được cách đi ngược thời gian! 🤖💫
+                                </p>
+                                <p className="text-sm text-orange-600 mt-2 italic">
+                                    Hãy thử nhập một năm trong tương lai nhé! ✨
+                                </p>
+                            </div>
+
+                            {/* Button đóng */}
+                            <button
+                                onClick={() => showpopup(false)}
+                                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                            >
+                                Hiểu rồi! 👍
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
